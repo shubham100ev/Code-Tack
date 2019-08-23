@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="8dp"
+    app:cardCornerRadius="6dp"
+    app:cardMaxElevation="8dp">
+
+    <RelativeLayout
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_name"
+            style="@style/CustomText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:text="Name"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/text_platform"
+            style="@style/CustomText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_name"
+            android:layout_centerHorizontal="true"
+            android:padding="8dp"
+            android:text="Platform"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text_start_time"
+            style="@style/CustomText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_platform"
+            android:layout_marginTop="8dp"
+            android:text="Start Time:-Wed, 03 Jul 2019 19:38:05"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text_duration"
+            style="@style/CustomText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_start_time"
+            android:layout_marginTop="8dp"
+            android:text="Duration:-10 Days"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text_end_time"
+            style="@style/CustomText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_duration"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="End Time:-Wed, 03 Jul 2019 19:38:05"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
