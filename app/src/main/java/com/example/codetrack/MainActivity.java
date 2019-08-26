@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 mRadioButton = radioGroup.findViewById(i);
                 if (mRadioButton != null && i > -1) {
                     if (mRadioButton.getText().equals("Ongoing")) {
-                        setData(1); //1 for upcoming
+                        setData(1); //1 for ongoing
                     } else if (mRadioButton.getText().equals("Upcoming")) {
-                        setData(2); //2 for past events
+                        setData(2); //2 for upcoming
                     }
                 }
             }

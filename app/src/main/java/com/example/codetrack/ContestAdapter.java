@@ -29,17 +29,18 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textName, textPlatform, textStartTime, textDuration, textEndTime;
+        TextView textName, textStartTime, textDuration, textEndTime;
         RelativeLayout card;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             textName = itemView.findViewById(R.id.text_name);
-            textPlatform = itemView.findViewById(R.id.text_platform);
             textStartTime = itemView.findViewById(R.id.text_start_time);
             textDuration = itemView.findViewById(R.id.text_duration);
             textEndTime = itemView.findViewById(R.id.text_end_time);
-            card=itemView.findViewById(R.id.card);
+            card = itemView.findViewById(R.id.card);
+
+
         }
     }
 
@@ -59,30 +60,20 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(@NonNull ContestAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ContestAdapter.MyViewHolder holder, final int position) {
         mModel = mList.get(position);
         holder.textName.setText(mModel.getName());
-        holder.textPlatform.setText(mModel.getPlatform());
         if (mModel.getStartTime().equals(""))
             holder.textStartTime.setVisibility(View.GONE);
         else
-            holder.textStartTime.setText("Start Time:-"+mModel.getStartTime());
+            holder.textStartTime.setText(mModel.getStartTime());
         if (mModel.getDuration().equals(""))
             holder.textDuration.setVisibility(View.GONE);
         else
-            holder.textDuration.setText("Duration:-"+mModel.getDuration());
-        holder.textEndTime.setText("End Time:-"+mModel.getEndTime());
+            holder.textDuration.setText(mModel.getDuration());
+        holder.textEndTime.setText(mModel.getEndTime());
 
-        RelativeLayout relativeLayout=holder.card;
 
-        relativeLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Intent intent=new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mModel.getLink()));
-                mContext.startActivity(intent);
-                return true;
-            }
-        });
     }
 
     @Override
