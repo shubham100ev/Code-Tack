@@ -48,6 +48,7 @@
         android:id="@+id/card_view_radio_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="@null"
         app:cardElevation="6dp">
 
         <LinearLayout

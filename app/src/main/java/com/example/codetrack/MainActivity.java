@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
 
-                            mAdapter = new ContestAdapter(list, mContext);
+                            mAdapter = new ContestAdapter(list, mContext,mRecyclerView);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
                             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                             mRecyclerView.setNestedScrollingEnabled(true);
