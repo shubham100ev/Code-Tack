@@ -2,8 +2,10 @@ package com.example.codetrack;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.service.autofill.TextValueSanitizer;
 import android.util.Log;
@@ -44,6 +46,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
         RelativeLayout layoutCard;
         ExpandableLayout expandableLayout;
         ImageButton imageLink;
+        ImageView platformImage;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -56,6 +59,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
             textDurationHead = itemView.findViewById(R.id.text_duration_head);
             layoutCard = itemView.findViewById(R.id.layout_card);
             expandableLayout = itemView.findViewById(R.id.sub_item);
+            platformImage = itemView.findViewById(R.id.image_platform);
             expandableLayout.setInterpolator(new OvershootInterpolator());
             expandableLayout.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
                 @Override
@@ -71,7 +75,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
             layoutCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MyViewHolder holder= (MyViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedItem);
+                    MyViewHolder holder = (MyViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedItem);
                     if (holder != null) {
                         holder.layoutCard.setSelected(false);
                         holder.expandableLayout.collapse();
@@ -111,8 +115,22 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(@NonNull ContestAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         mModel = mList.get(position);
+
+        if (mModel.getPlatform().equalsIgnoreCase("codechef")) {
+            holder.platformImage.setBackgroundResource(R.drawable.codechef);
+        } else if (mModel.getPlatform().equalsIgnoreCase("codeforces")) {
+            holder.platformImage.setBackgroundResource(R.drawable.codeforces);
+        } else if (mModel.getPlatform().equalsIgnoreCase("topcoder")) {
+            holder.platformImage.setBackgroundResource(R.drawable.topcoder);
+        } else if (mModel.getPlatform().equalsIgnoreCase("hackerearth")) {
+            holder.platformImage.setBackgroundResource(R.drawable.hackerearthlogo);
+        } else if (mModel.getPlatform().equalsIgnoreCase("hackerrank")) {
+            holder.platformImage.setBackgroundResource(R.drawable.hackerrank);
+        }
+
+
         holder.textName.setText(mModel.getName());
         if (mModel.getStartTime().equals("")) {
             holder.textStartTime.setVisibility(View.GONE);
@@ -134,7 +152,11 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
         holder.imageLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Done", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(mModel.getLink()));
+                if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+                    mContext.startActivity(intent);
+                }
             }
         });
 

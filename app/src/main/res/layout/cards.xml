@@ -24,10 +24,10 @@
 
             <ImageView
                 android:id="@+id/image_platform"
-                android:layout_width="80sp"
-                android:layout_height="80sp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_margin="8dp"
-                android:src="@drawable/others" />
+                android:background="@drawable/others" />
 
             <TextView
                 android:id="@+id/text_name"

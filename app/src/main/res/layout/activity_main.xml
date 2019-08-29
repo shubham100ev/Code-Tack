@@ -101,7 +101,7 @@
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/progress"
-        style="@style/SpinKitView.Large.WanderingCubes"
+        style="@style/SpinKitView.Large.Circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
