@@ -45,7 +45,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
         TextView textName, textStartTime, textStartTimeHead, textDuration, textDurationHead, textEndTime, textEndTimeHead;
         RelativeLayout layoutCard;
         ExpandableLayout expandableLayout;
-        ImageButton imageLink;
+        ImageButton imageLink,imageShare;
         ImageView platformImage;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -72,6 +72,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
             });
 
             imageLink = itemView.findViewById(R.id.image_link);
+            imageShare=itemView.findViewById(R.id.image_share);
             layoutCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -158,6 +159,15 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
                 intent.setData(Uri.parse(mList.get(position).getLink()));
                 Log.i("URL2",mList.get(position).getLink());
                 view.getContext().startActivity(intent);
+            }
+        });
+        holder.imageShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(android.content.Intent.EXTRA_TEXT, mList.get(position).getLink());
+                view.getContext().startActivity(Intent.createChooser(intent,"Share Contest URL"));
             }
         });
     }

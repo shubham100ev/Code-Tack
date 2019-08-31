@@ -158,15 +158,14 @@ public class MainActivity extends AppCompatActivity {
                             mAdapter = new ContestAdapter(list, mContext,mRecyclerView);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
                             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            mAdapter.notifyDataSetChanged();
                             mRecyclerView.setNestedScrollingEnabled(true);
                             mRecyclerView.setHasFixedSize(true);
-
                             mRecyclerView.setLayoutManager(layoutManager);
                             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                             progressBar.setVisibility(View.GONE);
                             mRecyclerView.setAdapter(mAdapter);
-                            for(int j=0;j<list.size();j++)
-                                Log.i("LIST ELEMENTS", String.valueOf(list.get(j)));
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
