@@ -115,7 +115,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         mModel = mList.get(position);
 
         if (mModel.getPlatform().equalsIgnoreCase("codechef")) {
@@ -129,6 +129,8 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
         } else if (mModel.getPlatform().equalsIgnoreCase("hackerrank")) {
             holder.platformImage.setBackgroundResource(R.drawable.hackerrank);
         }
+
+        Log.i("URL DISPLAY",mModel.getLink());
 
 
         holder.textName.setText(mModel.getName());
@@ -153,14 +155,11 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(mModel.getLink()));
-                if (intent.resolveActivity(mContext.getPackageManager()) != null) {
-                    mContext.startActivity(intent);
-                }
+                intent.setData(Uri.parse(mList.get(position).getLink()));
+                Log.i("URL2",mList.get(position).getLink());
+                view.getContext().startActivity(intent);
             }
         });
-
-
     }
 
     @Override

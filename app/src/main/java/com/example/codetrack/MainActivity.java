@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         });
         setData(1);
 
+        //CHECK FOR DATA CONNECTION
         ConnectivityManager conMag = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (conMag.getActiveNetworkInfo() != null && conMag.getActiveNetworkInfo().isAvailable() && conMag.getActiveNetworkInfo().isConnected()) {
             Log.i("INTERNET", "CONNECTED");
@@ -127,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                                         String Platform = arr1.getJSONObject(i).getString("Platform");
                                         String EndTime = arr1.getJSONObject(i).getString("EndTime");
                                         String url = arr1.getJSONObject(i).getString("url");
+                                        Log.i("URL1",url);
 
                                         list.add(new Contest(Name, EndTime, Platform, url, "", ""));
                                     }
@@ -163,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
                             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                             progressBar.setVisibility(View.GONE);
                             mRecyclerView.setAdapter(mAdapter);
+                            for(int j=0;j<list.size();j++)
+                                Log.i("LIST ELEMENTS", String.valueOf(list.get(j)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -175,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         mContestQueue.add(objectRequest);
+
 
     }
 }
