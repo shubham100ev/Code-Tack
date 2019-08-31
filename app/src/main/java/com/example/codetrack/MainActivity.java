@@ -2,10 +2,14 @@ package com.example.codetrack;
 
 import android.annotation.SuppressLint;
 import android.app.usage.NetworkStatsManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +21,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsClient;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsServiceConnection;
+import androidx.browser.customtabs.CustomTabsSession;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout linearLayoutContest, linearLayoutNoContest;
     private ProgressBar progressBar;
+
+    private Parcelable recyclerViewState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray arr2 = obj.getJSONArray("upcoming");
 
                             if (pos == 1) {
+
                                 if (arr1.length() == 0) {
                                     linearLayoutContest.setVisibility(View.GONE);
                                     linearLayoutNoContest.setVisibility(View.VISIBLE);
@@ -154,17 +167,22 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                             }
-
-                            mAdapter = new ContestAdapter(list, mContext,mRecyclerView);
+                            mAdapter = new ContestAdapter(list, getApplicationContext(),mRecyclerView);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
                             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                            mAdapter.notifyDataSetChanged();
                             mRecyclerView.setNestedScrollingEnabled(true);
                             mRecyclerView.setHasFixedSize(true);
                             mRecyclerView.setLayoutManager(layoutManager);
                             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                             progressBar.setVisibility(View.GONE);
+//                            mAdapter.notifyDataSetChanged();
                             mRecyclerView.setAdapter(mAdapter);
+
+
+//                            recyclerViewState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+//                            mAdapter.notifyDataSetChanged();
+//                        mRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -181,4 +199,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 }

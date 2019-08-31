@@ -3,10 +3,12 @@ package com.example.codetrack;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.service.autofill.TextValueSanitizer;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,29 +25,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.browser.customtabs.CustomTabsClient;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsServiceConnection;
+import androidx.browser.customtabs.CustomTabsSession;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHolder> {
     private List<Contest> mList;
-    private Context mContext;
+    Context mContext;
     private Contest mModel;
     private RecyclerView recyclerView;
 
     private static final int UNSELECTED = -1;
 
     private int selectedItem = UNSELECTED;
+    //Custom tab
+    private CustomTabsServiceConnection customTabsServiceConnection;
+    private CustomTabsClient mClient;
+    CustomTabsSession customTabsSession;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView textName, textStartTime, textStartTimeHead, textDuration, textDurationHead, textEndTime, textEndTimeHead;
         RelativeLayout layoutCard;
         ExpandableLayout expandableLayout;
-        ImageButton imageLink,imageShare;
+        ImageButton imageLink, imageShare;
         ImageView platformImage;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -60,6 +72,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
             layoutCard = itemView.findViewById(R.id.layout_card);
             expandableLayout = itemView.findViewById(R.id.sub_item);
             platformImage = itemView.findViewById(R.id.image_platform);
+
             expandableLayout.setInterpolator(new OvershootInterpolator());
             expandableLayout.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
                 @Override
@@ -72,7 +85,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
             });
 
             imageLink = itemView.findViewById(R.id.image_link);
-            imageShare=itemView.findViewById(R.id.image_share);
+            imageShare = itemView.findViewById(R.id.image_share);
             layoutCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -131,7 +144,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
             holder.platformImage.setBackgroundResource(R.drawable.hackerrank);
         }
 
-        Log.i("URL DISPLAY",mModel.getLink());
+        Log.i("URL DISPLAY", mModel.getLink());
 
 
         holder.textName.setText(mModel.getName());
@@ -155,19 +168,21 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
         holder.imageLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(mList.get(position).getLink()));
-                Log.i("URL2",mList.get(position).getLink());
-                view.getContext().startActivity(intent);
+                System.out.println(">>>>>>>>>>>>>>>" + mList.get(position).getLink());
+                customTabLinking(mContext, mList.get(position).getLink());
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setData(Uri.parse(mList.get(position).getLink()));
+//                Log.i("URL2",mList.get(position).getLink());
+//                view.getContext().startActivity(intent);
             }
         });
         holder.imageShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(Intent.ACTION_SEND);
+                Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(android.content.Intent.EXTRA_TEXT, mList.get(position).getLink());
-                view.getContext().startActivity(Intent.createChooser(intent,"Share Contest URL"));
+                mContext.startActivity(Intent.createChooser(intent, "Share Contest URL"));
             }
         });
     }
@@ -175,5 +190,46 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
     @Override
     public int getItemCount() {
         return mList == null ? 0 : mList.size();
+    }
+
+    public void customTabLinking(Context context, String url) {
+        customTabsServiceConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
+                //pre-warning means to fast the surfing
+                mClient = customTabsClient;
+                mClient.warmup(0L);
+                customTabsSession = mClient.newSession(null);
+            }
+
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                mClient = null;
+            }
+        };
+        CustomTabsClient.bindCustomTabsService((context), "com.android.chrome", customTabsServiceConnection);
+        Uri uri = Uri.parse(url);
+
+        //Create an Intent Builder
+        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+        intentBuilder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+
+        //Set Start and Exit Animations
+        intentBuilder.setStartAnimations(context, android.R.anim.slide_out_right, android.R.anim.slide_in_left);
+        intentBuilder.setExitAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
+        //build custom tabs intent
+        CustomTabsIntent customTabsIntent = intentBuilder.build();
+        customTabsIntent.intent.setPackage("com.android.chrome");
+        customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        intentBuilder.setShowTitle(true);
+        intentBuilder.enableUrlBarHiding();
+
+        customTabsIntent.launchUrl(context, uri);
+
     }
 }
