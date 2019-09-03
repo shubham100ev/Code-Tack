@@ -40,7 +40,7 @@ import java.util.Objects;
 
 public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHolder> {
     private List<Contest> mList;
-    Context mContext;
+    private Context mContext;
     private Contest mModel;
     private RecyclerView recyclerView;
 
@@ -181,7 +181,7 @@ public class ContestAdapter extends RecyclerView.Adapter<ContestAdapter.MyViewHo
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(android.content.Intent.EXTRA_TEXT, mList.get(position).getLink());
+                intent.putExtra(android.content.Intent.EXTRA_TEXT, mList.get(position).getLink()+"\nSend Using Code Track");
                 mContext.startActivity(Intent.createChooser(intent, "Share Contest URL"));
             }
         });
