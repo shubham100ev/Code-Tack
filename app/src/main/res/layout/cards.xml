@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
-    android:layout_marginTop="8dp"
     android:layout_marginRight="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="4dp"
     app:cardCornerRadius="6dp"
     app:cardMaxElevation="8dp">
 
@@ -35,10 +36,10 @@
                 style="@style/CustomText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_toRightOf="@+id/image_platform"
                 android:fontFamily="@font/montserrat"
                 android:gravity="center"
-                android:layout_centerInParent="true"
                 android:text="Dark Side of the Moon : HackerEarth Data Science Competition"
                 android:textSize="20sp" />
 
@@ -62,6 +63,26 @@
                 android:layout_height="wrap_content">
 
 
+                <ImageButton
+                    android:id="@+id/image_share"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="10dp"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_share" />
+
+                <ImageButton
+                    android:id="@+id/image_link"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/image_share"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="10dp"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_link_" />
 
                 <LinearLayout
                     android:id="@+id/expand_linear"
@@ -121,28 +142,7 @@
                         android:text="Sun May 15 2016 00:00"
                         android:textSize="16sp" />
                 </LinearLayout>
-                <ImageButton
-                    android:id="@+id/image_share"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_share"/>
-
-                <ImageButton
-                    android:id="@+id/image_link"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/image_share"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_link_" />
             </RelativeLayout>
-
 
 
         </net.cachapa.expandablelayout.ExpandableLayout>

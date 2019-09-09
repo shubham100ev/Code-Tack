@@ -13,6 +13,9 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -25,6 +28,7 @@ import androidx.browser.customtabs.CustomTabsClient;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.browser.customtabs.CustomTabsServiceConnection;
 import androidx.browser.customtabs.CustomTabsSession;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Parcelable recyclerViewState;
 
+    ImageButton filterBtn;
+    int FILTERCHECK = -1;
+    LinearLayout layoutFilter;
+    CardView filterCard;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +84,27 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutNoContest = findViewById(R.id.layout_no_contest);
         progressBar = findViewById(R.id.progress);
 
+        filterBtn = findViewById(R.id.filter_btn);
+        layoutFilter = findViewById(R.id.layout_filter);
+        filterCard=findViewById(R.id.filter_card);
+
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (FILTERCHECK == 1) {
+                    Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+                    filterCard.setAnimation(slideUp);
+                    filterCard.setVisibility(View.GONE);
+                    layoutFilter.setVisibility(View.GONE);
+                } else {
+                    Animation slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
+                    filterCard.setAnimation(slideDown);
+                    filterCard.setVisibility(View.VISIBLE);
+                    layoutFilter.setVisibility(View.VISIBLE);
+                }
+                FILTERCHECK = FILTERCHECK * -1;
+            }
+        });
 
 
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -141,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                                         String Platform = arr1.getJSONObject(i).getString("Platform");
                                         String EndTime = arr1.getJSONObject(i).getString("EndTime");
                                         String url = arr1.getJSONObject(i).getString("url");
-                                        Log.i("URL1",url);
+                                        Log.i("URL1", url);
 
                                         list.add(new Contest(Name, EndTime, Platform, url, "", ""));
                                     }
@@ -167,21 +197,15 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                             }
-                            mAdapter = new ContestAdapter(list, getApplicationContext(),mRecyclerView);
+                            mAdapter = new ContestAdapter(list, getApplicationContext(), mRecyclerView);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
                             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                            mRecyclerView.setNestedScrollingEnabled(true);
                             mRecyclerView.setHasFixedSize(true);
+                            mRecyclerView.setNestedScrollingEnabled(true);
                             mRecyclerView.setLayoutManager(layoutManager);
                             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                             progressBar.setVisibility(View.GONE);
-//                            mAdapter.notifyDataSetChanged();
                             mRecyclerView.setAdapter(mAdapter);
-
-
-//                            recyclerViewState = mRecyclerView.getLayoutManager().onSaveInstanceState();
-//                            mAdapter.notifyDataSetChanged();
-//                        mRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
 
 
                         } catch (JSONException e) {
@@ -199,6 +223,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
 }
