@@ -65,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Parcelable recyclerViewState;
 
-    ImageButton filterBtn;
-    int FILTERCHECK = -1;
+    boolean FILTERCHECK = false;
     LinearLayout layoutFilter;
     CardView filterCard;
 
@@ -84,27 +83,9 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutNoContest = findViewById(R.id.layout_no_contest);
         progressBar = findViewById(R.id.progress);
 
-        filterBtn = findViewById(R.id.filter_btn);
         layoutFilter = findViewById(R.id.layout_filter);
         filterCard=findViewById(R.id.filter_card);
 
-        filterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (FILTERCHECK == 1) {
-                    Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
-                    filterCard.setAnimation(slideUp);
-                    filterCard.setVisibility(View.GONE);
-                    layoutFilter.setVisibility(View.GONE);
-                } else {
-                    Animation slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
-                    filterCard.setAnimation(slideDown);
-                    filterCard.setVisibility(View.VISIBLE);
-                    layoutFilter.setVisibility(View.VISIBLE);
-                }
-                FILTERCHECK = FILTERCHECK * -1;
-            }
-        });
 
 
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -115,8 +96,12 @@ public class MainActivity extends AppCompatActivity {
                 if (mRadioButton != null && i > -1) {
                     if (mRadioButton.getText().equals("Ongoing")) {
                         setData(1); //1 for ongoing
+                        layoutFilter.setVisibility(View.GONE);
+                        filterCard.setVisibility(View.GONE);
                     } else if (mRadioButton.getText().equals("Upcoming")) {
                         setData(2); //2 for upcoming
+                        layoutFilter.setVisibility(View.GONE);
+                        filterCard.setVisibility(View.GONE);
                     }
                 }
             }
@@ -206,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                             progressBar.setVisibility(View.GONE);
                             mRecyclerView.setAdapter(mAdapter);
-
+                            return;
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -224,4 +209,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void doFilter(View view)
+    {
+        Log.i("Filter Button","Clicked");
+        if (FILTERCHECK) {
+            Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+            Animation slideUpRecycler=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_up_recycler);
+            layoutFilter.setAnimation(slideUp);
+            layoutFilter.setVisibility(View.GONE);
+            mRecyclerView.setAnimation(slideUpRecycler);
+        } else {
+            Animation slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
+            Animation slideDownRecycler=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_down_recycler);
+            layoutFilter.setAnimation(slideDown);
+            layoutFilter.setVisibility(View.VISIBLE);
+            mRecyclerView.setAnimation(slideDownRecycler);
+        }
+        FILTERCHECK = true;
+    }
 }

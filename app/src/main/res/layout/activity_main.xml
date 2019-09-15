@@ -105,7 +105,8 @@
                 android:background="@null"
                 android:padding="4dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_settings" />
+                app:srcCompat="@drawable/ic_settings"
+                android:onClick="doFilter"/>
 
         </LinearLayout>
 
@@ -118,6 +119,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
+        android:background="@null"
         android:layout_below="@+id/card_view_radio_buttons">
         <androidx.cardview.widget.CardView
             android:id="@+id/filter_card"
@@ -134,7 +136,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="All"
-                android:checked="true"
                 style="@style/CustomText"/>
             <RadioButton
                 android:layout_width="wrap_content"
