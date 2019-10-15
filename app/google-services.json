@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "85049779682",
+    "firebase_url": "https://code-track.firebaseio.com",
+    "project_id": "code-track",
+    "storage_bucket": "code-track.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85049779682:android:c8735f4d9da628e4d745bb",
+        "android_client_info": {
+          "package_name": "com.example.codetrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85049779682-4d35pfldm92uukn1n3usherl66r6e7r4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.codetrack",
+            "certificate_hash": "2d0c0ca4968b2e27bd0b8909aef59b17650cbb27"
+          }
+        },
+        {
+          "client_id": "85049779682-ab2fk38i29ojd02uc1hd9854bcevt07n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDePcILBnv4HaQgk9lJRPo41gmU2c3X3ls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85049779682-ab2fk38i29ojd02uc1hd9854bcevt07n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

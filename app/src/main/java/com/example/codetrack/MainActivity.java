@@ -1,17 +1,10 @@
 package com.example.codetrack;
 
 import android.annotation.SuppressLint;
-import android.app.usage.NetworkStatsManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,18 +15,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.browser.customtabs.CustomTabsClient;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.browser.customtabs.CustomTabsServiceConnection;
-import androidx.browser.customtabs.CustomTabsSession;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -63,12 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayoutContest, linearLayoutNoContest;
     private ProgressBar progressBar;
 
-    private Parcelable recyclerViewState;
-
-    boolean FILTERCHECK = false;
-    LinearLayout layoutFilter;
-    CardView filterCard;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutNoContest = findViewById(R.id.layout_no_contest);
         progressBar = findViewById(R.id.progress);
 
-        layoutFilter = findViewById(R.id.layout_filter);
-        filterCard=findViewById(R.id.filter_card);
 
 
 
+
+
+
+        //CHECK FOR UPCOMING AND ON GOING
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("ResourceType")
             @Override
@@ -96,12 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 if (mRadioButton != null && i > -1) {
                     if (mRadioButton.getText().equals("Ongoing")) {
                         setData(1); //1 for ongoing
-                        layoutFilter.setVisibility(View.GONE);
-                        filterCard.setVisibility(View.GONE);
                     } else if (mRadioButton.getText().equals("Upcoming")) {
                         setData(2); //2 for upcoming
-                        layoutFilter.setVisibility(View.GONE);
-                        filterCard.setVisibility(View.GONE);
                     }
                 }
             }
@@ -122,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     void setData(final int pos) {
+
         linearLayoutContest.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         mContestQueue = Volley.newRequestQueue(this);
@@ -191,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
                             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                             progressBar.setVisibility(View.GONE);
                             mRecyclerView.setAdapter(mAdapter);
-                            return;
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -207,24 +185,5 @@ public class MainActivity extends AppCompatActivity {
         mContestQueue.add(objectRequest);
 
 
-    }
-
-    public void doFilter(View view)
-    {
-        Log.i("Filter Button","Clicked");
-        if (FILTERCHECK) {
-            Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
-            Animation slideUpRecycler=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_up_recycler);
-            layoutFilter.setAnimation(slideUp);
-            layoutFilter.setVisibility(View.GONE);
-            mRecyclerView.setAnimation(slideUpRecycler);
-        } else {
-            Animation slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
-            Animation slideDownRecycler=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_down_recycler);
-            layoutFilter.setAnimation(slideDown);
-            layoutFilter.setVisibility(View.VISIBLE);
-            mRecyclerView.setAnimation(slideDownRecycler);
-        }
-        FILTERCHECK = true;
     }
 }

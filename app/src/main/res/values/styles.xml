@@ -11,4 +11,8 @@
     <item name="android:textStyle">bold</item>
     <item name="android:fontFamily">@font/montserrat</item>
 </style>
+    <style name="CustomButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_default</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 </resources>
